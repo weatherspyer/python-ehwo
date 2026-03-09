@@ -4,6 +4,7 @@ from io import BytesIO
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import math
 from time import time
 import os
@@ -27,6 +28,13 @@ SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
+
+# -----------------------------
+# REQUESTS SESSION
+# -----------------------------
+
+session = requests.Session()
+session.headers.update({"User-Agent": "EHWO-Script"})
 
 # -----------------------------
 # GOOGLE SHEETS AUTH
@@ -157,7 +165,8 @@ def insert_data(sheet,new_data):
 
 def process_day(day_num,categories,sheet):
 
-    current_time=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # Use Eastern Time
+    current_time = datetime.now(ZoneInfo("America/New_York")).strftime('%Y-%m-%d %H:%M:%S')
     new_data=[]
 
     for category in categories:
@@ -167,10 +176,11 @@ def process_day(day_num,categories,sheet):
 
         try:
 
-            head=requests.head(image_url)
-            last_modified=head.headers.get("Last-Modified","Not available")
+            # Use the session for both HEAD and GET
+            head = session.head(image_url)
+            last_modified = head.headers.get("Last-Modified","Not available")
 
-            response=requests.get(image_url)
+            response = session.get(image_url)
 
             if response.status_code==200:
 
