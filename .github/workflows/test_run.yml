@@ -1,33 +1,31 @@
-name: Run EHWO Script
+name: EHWO Script
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 0,6,12,18 * * *"  # Every 6 hours: 12am, 6am, 12pm, 6pm ET
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
 
 jobs:
+
   run-script:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
 
       - name: Run EHWO Script
+        env:
+          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
         run: python EHWO.py
