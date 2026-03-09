@@ -248,7 +248,7 @@ print("\n✅ Complete")
 # Webhook trigger
 # -----------------------------
 
-script_url = "https://script.google.com/macros/s/AKfycbxDYCUlAbJiID9ITPF4XMzoDHcuMxpjPUV-deIAOStO3zJFMdA8MTK8dy3pnMN6zCpN/exec"
+script_url = "https://script.google.com/macros/s/AKfycbxFDhQSFu_bhNwCaz497jZyW40ZgYr2EdOnuKK0VxuN1sSt46In-F3FC9RZ4WddE-A/exec"
 
 try:
     response = requests.get(script_url)
