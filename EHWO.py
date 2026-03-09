@@ -239,3 +239,16 @@ for day_num,categories in days_categories.items():
     process_day(day_num,categories,sheets[day_num])
 
 print("\n✅ Complete")
+
+# -----------------------------
+# Webhook trigger (optional)
+# -----------------------------
+script_url = "https://script.google.com/macros/s/AKfycbxDYCUlAbJiID9ITPF4XMzoDHcuMxpjPUV-deIAOStO3zJFMdA8MTK8dy3pnMN6zCpN/exec"
+try:
+    response = requests.get(script_url)
+    if response.status_code == 200:
+        print("📡 Webhook triggered successfully.")
+    else:
+        print(f"⚠️ Webhook failed: {response.status_code}")
+except Exception as e:
+    print(f"🚨 Webhook error: {e}")
