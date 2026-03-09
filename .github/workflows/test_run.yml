@@ -3,7 +3,7 @@ name: Run EHWO Script
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0,6,12,18 * * *"
+    - cron: "0 0,6,12,18 * * *"  # Every 6 hours: 12am, 6am, 12pm, 6pm ET
 
 jobs:
   run-script:
@@ -18,11 +18,16 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
       - name: Run EHWO Script
         run: python EHWO.py
-
-      - name: Create credentials.json
-        run: echo '${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}' > credentials.json
