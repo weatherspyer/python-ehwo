@@ -1,0 +1,30 @@
+name: Run EHWO Script
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests pillow gspread google-auth selenium beautifulsoup4
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Create credentials.json
+        run: echo "${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}" | base64 --decode > credentials.json
+
+      - name: Run script
+        run: python ehwo.py
