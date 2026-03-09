@@ -27,4 +27,4 @@ jobs:
         run: echo "${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}" | base64 --decode > credentials.json
 
       - name: Run script
-        run: python ehwo.py
+        run: python EHWO.py
