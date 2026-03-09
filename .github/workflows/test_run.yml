@@ -2,29 +2,27 @@ name: Run EHWO Script
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0,6,12,18 * * *"
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
-          pip install requests pillow gspread google-auth selenium beautifulsoup4
+        run: pip install -r requirements.txt
 
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@v1
+      - name: Run EHWO Script
+        run: python EHWO.py
 
       - name: Create credentials.json
-        run: echo "${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}" | base64 --decode > credentials.json
-
-      - name: Run script
-        run: python EHWO.py
+        run: echo '${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}' > credentials.json
