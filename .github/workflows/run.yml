@@ -2,7 +2,7 @@ name: EHWO Script
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 4,10,16,22 * * *"
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- Cache pip dependencies ---
       - name: Cache pip
         uses: actions/cache@v3
         with:
