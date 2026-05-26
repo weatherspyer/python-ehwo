@@ -248,15 +248,31 @@ print("\n✅ Complete")
 # Webhook trigger
 # -----------------------------
 
-script_url = "https://script.google.com/macros/s/AKfycbxFDhQSFu_bhNwCaz497jZyW40ZgYr2EdOnuKK0VxuN1sSt46In-F3FC9RZ4WddE-A/exec"
+script_url = os.environ.get("GOOGLE_SHEETS_WEBHOOK_API_URL_ID")
+api_key = os.environ.get("GOOGLE_SHEETS_WEBHOOK_API_KEY")
 
-try:
-    response = requests.get(script_url)
+if not script_url:
+    print("⚠️ Missing GOOGLE_SHEETS_WEBHOOK_API_URL_ID")
 
-    if response.status_code == 200:
-        print("📡 Webhook triggered successfully.")
-    else:
-        print(f"⚠️ Webhook failed: {response.status_code}")
+elif not api_key:
+    print("⚠️ Missing GOOGLE_SHEETS_WEBHOOK_API_KEY")
 
-except Exception as e:
-    print(f"🚨 Webhook error: {e}")
+else:
+
+    try:
+
+        response = requests.get(
+            script_url,
+            params={
+                "key": api_key
+            },
+            timeout=30
+        )
+
+        if response.status_code == 200:
+            print("📡 Webhook triggered successfully.")
+        else:
+            print(f"⚠️ Webhook failed: {response.status_code}")
+
+    except Exception as e:
+        print(f"🚨 Webhook error: {e}")
