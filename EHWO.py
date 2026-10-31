@@ -127,33 +127,33 @@ days_categories = {
 # -----------------------------
 
 COLOR_MAP = {
-    "yellow": (255,255,0),
-    "orange": (255,165,0),
-    "red": (255,0,0),
-    "pink": (255,0,255),
-    "green": (0,255,0)
+    "yellow": (255, 255, 0),
+    "orange": (255, 165, 0),
+    "red": (255, 0, 0),
+    "pink": (255, 0, 255),
+    "green": (0, 255, 0)
 }
 
-def color_distance(c1,c2):
-    return math.sqrt(sum((a-b)**2 for a,b in zip(c1,c2)))
+def color_distance(c1, c2):
+    return math.sqrt(sum((a - b) ** 2 for a, b in zip(c1, c2)))
 
-def is_grey(rgb,tolerance=20,brightness_threshold=160):
-    r,g,b=rgb
-    brightness=(r+g+b)/3
-    return abs(r-g)<=tolerance and abs(g-b)<=tolerance and abs(r-b)<=tolerance and brightness<=brightness_threshold
+def is_grey(rgb, tolerance=20, brightness_threshold=240): # Updated threshold for the new brighter background
+    r, g, b = rgb
+    brightness = (r + g + b) / 3
+    return abs(r - g) <= tolerance and abs(g - b) <= tolerance and abs(r - b) <= tolerance and brightness <= brightness_threshold
 
 def closest_color_name(rgb):
-    distances={name:color_distance(rgb,target) for name,target in COLOR_MAP.items()}
-    return min(distances,key=distances.get)
+    distances = {name: color_distance(rgb, target) for name, target in COLOR_MAP.items()}
+    return min(distances, key=distances.get)
 
-def classify_color(rgb,category):
+def classify_color(rgb, category):
     if is_grey(rgb):
         return "grey"
 
-    best_match=closest_color_name(rgb)
+    best_match = closest_color_name(rgb)
 
-    if best_match=="green":
-        if category in ["SevereThunderstorms","Tornado","ThunderstormWind","Hail"]:
+    if best_match == "green":
+        if category in ["SevereThunderstorms", "Tornado", "ThunderstormWind", "Hail"]:
             return "green"
         return "grey"
 
